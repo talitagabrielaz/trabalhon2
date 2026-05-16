@@ -1,58 +1,164 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🪡 Produtos Artesanais
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Sistema web de cadastro e exibição de produtos artesanais com imagem e catálogo em PDF.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-13.8-red?style=flat-square&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.3-blue?style=flat-square&logo=php)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?style=flat-square&logo=bootstrap)
+![SQLite](https://img.shields.io/badge/SQLite-banco%20de%20dados-lightblue?style=flat-square&logo=sqlite)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Trabalho de criação de site — Projeto Laravel**  
+👤 Autores: **Matheus Lucas** e **Talita Gabriela**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📌 Sobre o projeto
 
-## Learning Laravel
+O **Produtos Artesanais** é um sistema web desenvolvido em Laravel que permite o cadastro, edição e exibição de produtos artesanais. O sistema conta com uma área administrativa protegida por login e uma landing page pública para visualização do catálogo.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ✅ Funcionalidades
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- 🔐 Login e cadastro de usuário
+- 🏠 Dashboard administrativo
+- 📦 Cadastro, edição, listagem e exclusão de produtos
+- 🗂️ Gerenciamento de categorias
+- 🖼️ Upload de imagem por produto
+- 📄 Upload de catálogo em PDF
+- 🌐 Landing page pública com filtro por categoria
+- 📱 Layout responsivo com Bootstrap
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🗄️ Modelagem do banco de dados
+
+### Tabelas
+
+**`usuarios`** — Administradores do sistema
+
+| Campo      | Tipo      | Observação         |
+|------------|-----------|--------------------|
+| id         | integer   | PK, auto-increment |
+| nome       | varchar   |                    |
+| email      | varchar   | unique, not null   |
+| senha      | varchar   | not null           |
+| created_at | timestamp |                    |
+
+**`categorias`** — Organização do catálogo
+
+| Campo     | Tipo    | Observação         |
+|-----------|---------|--------------------|
+| id        | integer | PK, auto-increment |
+| nome      | varchar | not null           |
+| descricao | text    |                    |
+
+**`produtos`** — Produtos com imagens e PDFs
+
+| Campo            | Tipo          | Observação                  |
+|------------------|---------------|-----------------------------|
+| id               | integer       | PK, auto-increment          |
+| nome             | varchar       | not null                    |
+| descricao        | text          |                             |
+| preco            | decimal(10,2) |                             |
+| imagem_url       | varchar       | Caminho do upload da imagem |
+| catalogo_pdf_url | varchar       | Caminho do upload do PDF    |
+| usuario_id       | integer       | FK → usuarios.id            |
+| categoria_id     | integer       | FK → categorias.id          |
+| created_at       | timestamp     |                             |
+
+### Relacionamentos
+- Um **usuário** cadastra muitos **produtos**
+- Uma **categoria** pertence a muitos **produtos**
+
+---
+
+## 🚀 Como rodar o projeto
+
+### Pré-requisitos
+- PHP 8.3+
+- Composer
+- Node.js e NPM
+
+### Passo a passo
 
 ```bash
-composer require laravel/boost --dev
+# 1. Instalar dependências PHP
+composer install
 
-php artisan boost:install
+# 2. Copiar o arquivo de ambiente
+cp .env.example .env
+
+# 3. Gerar a chave da aplicação
+php artisan key:generate
+
+# 4. Criar o banco de dados e rodar as migrations
+php artisan migrate
+
+# 5. Popular o banco com dados iniciais
+php artisan db:seed
+
+# 6. Criar link de storage para uploads
+php artisan storage:link
+
+# 7. Instalar dependências JS e buildar assets
+npm install
+npm run build
+
+# 8. Rodar o servidor
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Acesse em: **http://127.0.0.1:8000**
 
-## Contributing
+### Login padrão
+- **Email:** admin@artesanal.local
+- **Senha:** senha1234
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🏗️ Estrutura do projeto
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+├── app/
+│   ├── Http/Controllers/   # Controllers do sistema
+│   └── Models/             # Models (User, Produto, Categoria)
+├── database/
+│   ├── migrations/         # Migrations das tabelas
+│   └── seeders/            # Seeds com dados iniciais
+├── resources/
+│   ├── views/              # Telas Blade
+│   │   ├── layouts/        # Layout principal
+│   │   ├── produtos/       # Telas de produtos
+│   │   ├── categorias/     # Telas de categorias
+│   │   └── auth/           # Login e registro
+│   └── sass/               # Estilos personalizados
+└── routes/
+    └── web.php             # Rotas da aplicação
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📋 Etapas de entrega
 
-## License
+| Etapa | Descrição | Status |
+|-------|-----------|--------|
+| 1ª | Requisitos do sistema | ✅ |
+| 2ª | Modelagem do banco de dados | ✅ |
+| 3ª | Criação do projeto e repositório | ✅ |
+| 4ª | Estrutura do backend | ✅ |
+| 5ª | Interface (front-end) | ✅ |
+| 6ª | Apresentação prévia | ✅ |
+| 7ª | Apresentação final | 🔄 |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠️ Tecnologias utilizadas
+
+- **Laravel 13** — Framework PHP
+- **PHP 8.3** — Linguagem backend
+- **SQLite** — Banco de dados
+- **Bootstrap 5** — Framework CSS
+- **Blade** — Template engine
+- **Vite** — Bundler de assets
+- **JavaScript** — Interatividade frontend
